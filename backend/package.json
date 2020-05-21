@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "start:nodemon": "nodemon app.js",
+    "dev": "concurrently \"yarn run start:nodemon\" \"cd ../frontend && npm start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,5 +17,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.15"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0"
   }
 }

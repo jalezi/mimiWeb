@@ -18,9 +18,9 @@ const News = () => {
           });
         }
       })
-      .then(data => {
-        console.log('data', data);
-        return setNews({ articles: data });
+      .then(articles => {
+        console.log('[News] articles:', articles);
+        return setNews({ articles });
       })
       .catch(err => {
         console.log(`Error, with message: ${err.statusText}`);
@@ -36,9 +36,9 @@ const News = () => {
   ));
 
   return (
-    <div className="News">
+    <div>
       <h2>News</h2>
-      <div>{htmlElements ? htmlElements : null}</div>
+      <div className="News">{htmlElements ? htmlElements : null}</div>
     </div>
   );
 };

@@ -29,6 +29,22 @@ app.set('port', port);
 
 // API Routes
 app.use('/api/news', newsRoutes);
+app.use((req, res) => {
+  const error = new HttpError('Could not find this route.', 404);
+  throw error;
+});
+app.use((error, req, res, next) => {
+  if (req.file) {
+    fs.unlink(req.file.path, err => {
+      console.log(err);
+    });
+  }
+  if (res.headerSent) {
+    return next(error);
+  }
+  res.status(error.code || 500);
+  res.json({ message: error.message || 'An unknown error occurred!' });
+});
 
 // Set up Mongoose and App listen
 mongoose
@@ -53,5 +69,6 @@ mongoose
   })
   .catch(error => {
     console.log(error);
+    process.exit(1);
   });
 mongoose.Promise = global.Promise;

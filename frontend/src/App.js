@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
 
 import News from './news/pages/News';
+import Admin from './admin/pages/Admin';
 
 const App = () => {
   return (
@@ -16,6 +17,9 @@ const App = () => {
             <li>
               <Link to="/news">News</Link>
             </li>
+            <li>
+              <Link to="/admin">Admin</Link>
+            </li>
           </ul>
         </nav>
 
@@ -24,6 +28,9 @@ const App = () => {
         <Switch>
           <Route path="/news">
             <News />
+          </Route>
+          <Route path="/admin">
+            <Admin />
           </Route>
           <Route path="/">
             <Home />

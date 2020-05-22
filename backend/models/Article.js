@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const articleSchemaObject = {
   title: String,
   body: String,
+  date: Date,
+  attachments: {
+    images: [{ path: String }],
+  },
 };
 
 const articleSchema = new mongoose.Schema(articleSchemaObject, {

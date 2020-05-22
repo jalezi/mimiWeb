@@ -2,6 +2,7 @@ import React from 'react';
 
 import './Admin.css';
 import NewArticle from './../components/NewArticle';
+import AdminArticles from '../components/AdminArticles';
 
 const Admin = () => {
   return (
@@ -13,7 +14,7 @@ const Admin = () => {
           <li>Add Article</li>
           <li>Delete Article</li>
         </ul>
-
+        <AdminArticles />
         <NewArticle />
       </div>
     </div>

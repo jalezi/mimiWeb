@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import AdminArticle from './AdminArticle';
 
-import './News.css';
-import Articles from '../components/Articles';
-
-const News = () => {
+const AdminArticles = () => {
   const [news, setNews] = useState({ articles: [] });
+  let htmlElements = null;
 
   useEffect(() => {
     fetch('/api/news')
@@ -19,7 +18,7 @@ const News = () => {
         }
       })
       .then(articles => {
-        console.log('[News] articles:', articles);
+        console.log('[AdminArticles] articles:', articles);
         return setNews({ articles });
       })
       .catch(err => {
@@ -28,14 +27,10 @@ const News = () => {
       });
   }, []);
 
-  return (
-    <div>
-      <h2>News</h2>
-      <div className="News">
-        <Articles articles={news.articles} />
-      </div>
-    </div>
-  );
+  htmlElements = news.articles.map(item => (
+    <AdminArticle key={item._id} item={item} />
+  ));
+  return <div>{htmlElements ? htmlElements : null}</div>;
 };
 
-export default News;
+export default AdminArticles;

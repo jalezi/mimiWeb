@@ -28,4 +28,34 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.delete('/:pid', async (req, res, next) => {
+  console.log('DELETE request in News');
+  const articleId = req.params.pid;
+  console.log(articleId);
+  let article;
+  try {
+    article = await Article.findById(articleId);
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      'Something went wrong, could not delete article.',
+      500
+    );
+    return next(error);
+  }
+
+  try {
+    await article.remove();
+  } catch (err) {
+    console.log(err);
+    const error = new HttpError(
+      'Something went wrong, could not delete article.',
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ message: 'Article deleted.' });
+});
+
 module.exports = router;

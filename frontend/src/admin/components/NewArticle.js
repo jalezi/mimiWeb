@@ -23,7 +23,7 @@ const initialState = {
   body: '',
 };
 
-function NewArticle(props) {
+const NewArticle = props => {
   const [formData, newFormData] = useState({ ...initialState });
   const history = useHistory();
 
@@ -34,7 +34,7 @@ function NewArticle(props) {
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 
   const onSubmit = async data => {
-    console.log(data);
+    console.log('[NewArticle] [onSubmit] data: ', data);
     try {
       await fetch('/api/news', {
         method: 'POST',
@@ -83,6 +83,6 @@ function NewArticle(props) {
       </form>
     </React.Fragment>
   );
-}
+};
 
 export default NewArticle;

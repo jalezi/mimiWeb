@@ -23,18 +23,14 @@ const initialState = {
   body: '',
 };
 
-function NewArticle(props) {
+const NewArticle = props => {
   const [formData, newFormData] = useState({ ...initialState });
   const history = useHistory();
-
-  const cancelHandler = event => {
-    event.preventDefault();
-  };
 
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 
   const onSubmit = async data => {
-    console.log(data);
+    console.log('[NewArticle] [onSubmit] data: ', data);
     try {
       await fetch('/api/news', {
         method: 'POST',
@@ -79,10 +75,9 @@ function NewArticle(props) {
           defaultValue={formData.body}
         />
         <button type="submit">PUBLISH</button>
-        <button onClick={cancelHandler}>CANCEL</button>
       </form>
     </React.Fragment>
   );
-}
+};
 
 export default NewArticle;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './Admin.css';
-import NewArticle from './../components/NewArticle';
+import AdminArticles from '../components/AdminArticles/AdminArticles';
 
 const Admin = () => {
   return (
@@ -10,11 +10,12 @@ const Admin = () => {
       <div className="Admin">
         <h3>News</h3>
         <ul>
-          <li>Add Article</li>
-          <li>Delete Article</li>
+          <li className="Striketrough">Sort Articles</li>
+          <li className="Striketrough">Add Article</li>
+          <li className="Striketrough">Delete Article</li>
+          <li>Edit Article</li>
         </ul>
-
-        <NewArticle />
+        <AdminArticles />
       </div>
     </div>
   );

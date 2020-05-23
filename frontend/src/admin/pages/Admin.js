@@ -10,7 +10,7 @@ const Admin = () => {
       <div className="Admin">
         <h3>News</h3>
         <ul>
-          <li>Sort Articles</li>
+          <li className="Striketrough">Sort Articles</li>
           <li className="Striketrough">Add Article</li>
           <li className="Striketrough">Delete Article</li>
           <li>Edit Article</li>

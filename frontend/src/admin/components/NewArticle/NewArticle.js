@@ -27,10 +27,6 @@ const NewArticle = props => {
   const [formData, newFormData] = useState({ ...initialState });
   const history = useHistory();
 
-  const cancelHandler = event => {
-    event.preventDefault();
-  };
-
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 
   const onSubmit = async data => {
@@ -79,7 +75,6 @@ const NewArticle = props => {
           defaultValue={formData.body}
         />
         <button type="submit">PUBLISH</button>
-        <button onClick={cancelHandler}>CANCEL</button>
       </form>
     </React.Fragment>
   );

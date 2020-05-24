@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import './NavLinks.css';
@@ -10,7 +10,11 @@ const NavLinks = props => {
         <NavLink to="/" exact>
           Home
         </NavLink>
+      </li>
+      <li>
         <NavLink to="/news">News</NavLink>
+      </li>
+      <li>
         <NavLink to="/admin">Admin</NavLink>
       </li>
     </ul>

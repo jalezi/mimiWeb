@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-family: 'Roboto', sans-serif;
 }
@@ -13,10 +17,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 .slide-in-left-enter {

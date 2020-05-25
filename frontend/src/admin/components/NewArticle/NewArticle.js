@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormContext, useForm, useFormContext } from 'react-hook-form';
 
 import './NewArticle.css';
+import { Editor } from '@tinymce/tinymce-react';
 
 // should use moment package?
 const formatDate = date => {
@@ -24,24 +25,33 @@ const initialState = {
 };
 
 const NewArticle = props => {
-  const [formData, newFormData] = useState({ ...initialState });
+  const [formData, newFormData] = useState({
+    date: initialState.date,
+    title: initialState.title,
+  });
+  const [body, newBody] = useState('');
   const history = useHistory();
 
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 
   const onSubmit = async data => {
-    console.log('[NewArticle] [onSubmit] data: ', data);
+    newFormData({ date: data.date, title: data.title, body });
+
     try {
       await fetch('/api/news', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data }),
+        body: JSON.stringify({ ...data, body }),
       });
       newFormData({ ...initialState });
       history.push('/admin');
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleChange = content => {
+    newBody(content);
   };
 
   return (
@@ -65,7 +75,19 @@ const NewArticle = props => {
         />
         {errors.title && 'Title is required.'}
         <label htmlFor="body">Text</label>
-        <textarea
+        <Editor
+          apiKey="drxdklp0uwvgvcxz0amzqgr787zdsz61sprkzl3jx3lz72il"
+          id="body"
+          textareaName="body"
+          value={body}
+          init={{
+            height: 500,
+            menubar: false,
+          }}
+          ref={register}
+          onEditorChange={handleChange}
+        />
+        {/* <textarea
           id="body"
           name="body"
           rows="5"
@@ -73,7 +95,7 @@ const NewArticle = props => {
           placeholder="Your text..."
           ref={register}
           defaultValue={formData.body}
-        />
+        /> */}
         <button type="submit">PUBLISH</button>
       </form>
     </React.Fragment>

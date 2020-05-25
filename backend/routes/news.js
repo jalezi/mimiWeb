@@ -17,7 +17,20 @@ router.get('/', (req, res, next) => {
 router.post('/', async (req, res, next) => {
   console.log('POST request in News');
   const { date, title, body } = req.body;
-  console.log({ date, title, body });
+
+  // if date or title not exist return error
+  if (!date || !title) {
+    const error = new HttpError(
+      'Creating article failed, please try again',
+      500
+    );
+    return next(error);
+  }
+
+  if (!body) {
+    body = 'Content missing!';
+  }
+
   const article = new Article({ date, title, body });
   try {
     await article.save();

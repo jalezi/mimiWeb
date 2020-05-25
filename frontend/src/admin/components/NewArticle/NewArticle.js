@@ -44,7 +44,7 @@ const NewArticle = props => {
         body: JSON.stringify({ ...data, body }),
       });
       newFormData({ ...initialState });
-      history.push('/admin');
+      props.close();
     } catch (err) {
       console.log(err);
     }

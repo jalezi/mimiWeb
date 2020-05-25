@@ -66,7 +66,6 @@ const AdminArticles = () => {
   ));
 
   const showFormHandler = event => {
-    event.preventDefault();
     setShowForm(!showForm);
   };
 
@@ -89,7 +88,7 @@ const AdminArticles = () => {
           </li>
         </ul>
       </nav>
-      {showForm ? <NewArticle /> : null}
+      {showForm ? <NewArticle close={showFormHandler} /> : null}
       {showForm ? <hr /> : null}
       <div>{htmlElements ? htmlElements : null}</div>
     </React.Fragment>

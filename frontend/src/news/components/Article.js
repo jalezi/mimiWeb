@@ -1,14 +1,17 @@
 import React from 'react';
-var ReactDOMServer = require('react-dom/server');
-var HtmlToReactParser = require('html-to-react').Parser;
-var htmlToReactParser = new HtmlToReactParser();
+import { Parser as HtmlToReactParser } from 'html-to-react';
+import { formatDate } from './../../shared/util/utils';
+
+const htmlToReactParser = new HtmlToReactParser();
 
 const Article = props => {
-  var reactElement = htmlToReactParser.parse(props.item.body);
+  const reactElement = htmlToReactParser.parse(props.item.body);
+  const date = formatDate(props.item.date);
 
   return (
     <article id={props.item._id}>
       <h3>{props.item.title}</h3>
+      <h6>Date: {date}</h6>
       {reactElement}
     </article>
   );

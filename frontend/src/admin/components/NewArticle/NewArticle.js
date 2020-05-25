@@ -4,19 +4,7 @@ import { FormContext, useForm, useFormContext } from 'react-hook-form';
 
 import './NewArticle.css';
 import { Editor } from '@tinymce/tinymce-react';
-
-// should use moment package?
-const formatDate = date => {
-  let d = new Date(date),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  return [year, month, day].join('-');
-};
+import { formatDate } from './../../../shared/util/utils';
 
 const initialState = {
   date: formatDate(new Date()),

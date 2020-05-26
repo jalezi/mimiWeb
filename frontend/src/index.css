@@ -38,3 +38,24 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media (min-width: 768px) {
+  body {
+    margin: 0 30px;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media (min-width: 992px) {
+  body {
+    margin: 0 60px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  body {
+    margin: 0 120px;
+  }
+}

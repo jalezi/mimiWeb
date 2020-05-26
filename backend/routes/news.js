@@ -4,11 +4,11 @@ const { Article, HttpError } = require('../models');
 
 const router = express.Router();
 
-// Returns all articles in by date descending order
+// Returns all articles in by date & createdAt descending order
 router.get('/', (req, res, next) => {
   console.log('GET request in News');
   Article.find()
-    .sort({ date: -1 })
+    .sort({ date: -1, createdAt: -1 })
     .then(docs => res.json(docs))
     .catch(err => next(err));
 });

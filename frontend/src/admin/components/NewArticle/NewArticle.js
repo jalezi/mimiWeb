@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { FormContext, useForm, useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import './NewArticle.css';
 import { Editor } from '@tinymce/tinymce-react';
@@ -18,7 +17,6 @@ const NewArticle = props => {
     title: initialState.title,
   });
   const [body, newBody] = useState('');
-  const history = useHistory();
 
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 

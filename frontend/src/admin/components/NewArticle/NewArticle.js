@@ -47,14 +47,18 @@ const NewArticle = props => {
   return (
     <React.Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="date">Date</label>
+        <label className="label" htmlFor="date">
+          Date
+        </label>
         <input
           type="date"
           name="date"
           ref={register}
           defaultValue={formData.date}
         />
-        <label htmlFor="title">Title</label>
+        <label className="label" htmlFor="title">
+          Title
+        </label>
         <input
           type="text"
           id="title"
@@ -64,7 +68,9 @@ const NewArticle = props => {
           defaultValue={formData.title}
         />
         {errors.title && 'Title is required.'}
-        <label htmlFor="body">Text</label>
+        <label className="label" htmlFor="body">
+          Text
+        </label>
         <Editor
           apiKey="drxdklp0uwvgvcxz0amzqgr787zdsz61sprkzl3jx3lz72il"
           id="body"
@@ -77,16 +83,7 @@ const NewArticle = props => {
           ref={register}
           onEditorChange={handleChange}
         />
-        {/* <textarea
-          id="body"
-          name="body"
-          rows="5"
-          cols="50"
-          placeholder="Your text..."
-          ref={register}
-          defaultValue={formData.body}
-        /> */}
-        <button type="submit">PUBLISH</button>
+        <input type="submit" value="PUBLISH" />
       </form>
     </React.Fragment>
   );

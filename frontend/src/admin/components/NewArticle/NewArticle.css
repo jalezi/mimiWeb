@@ -1,10 +1,18 @@
-textarea {
-  /* width: 100%;
-  height: 150px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8; */
-  resize: none;
+input {
+  border-style: none;
+}
+
+label {
+  background-color: #231f20;
+  color: #f15c27;
+  padding: 0.5rem;
+  margin: 1rem;
+}
+
+.date-picker {
+  margin: 0 1rem;
+}
+
+#show-form-button {
+  margin-bottom: 1rem;
 }

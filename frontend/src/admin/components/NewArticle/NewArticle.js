@@ -26,11 +26,15 @@ const NewArticle = props => {
     newFormData({ date: data.date, title: data.title, body });
 
     try {
-      await fetch('/api/news', {
+      const response = await fetch('/api/news', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...data, body }),
       });
+      const json = await response.json();
+      const article = json.article;
+
+      props.updateNewsState(article);
       newFormData({ ...initialState });
       props.close();
     } catch (err) {

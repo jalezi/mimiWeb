@@ -65,8 +65,16 @@ const AdminArticles = () => {
     />
   ));
 
-  const showFormHandler = event => {
+  const showFormHandler = () => {
     setShowForm(!showForm);
+  };
+
+  const updateArticles = article => {
+    setNews(prevState => {
+      const arr = [...prevState.articles];
+      arr.unshift(article);
+      return { ...news, articles: arr };
+    });
   };
 
   return (
@@ -88,7 +96,9 @@ const AdminArticles = () => {
           </li>
         </ul>
       </nav>
-      {showForm ? <NewArticle close={showFormHandler} /> : null}
+      {showForm ? (
+        <NewArticle close={showFormHandler} updateNewsState={updateArticles} />
+      ) : null}
       {showForm ? <hr /> : null}
       <div>{htmlElements ? htmlElements : null}</div>
     </React.Fragment>

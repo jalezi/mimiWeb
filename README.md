@@ -1,6 +1,7 @@
 # mimiWeb
 
-create .env file in backend directory
-add DB_URI='path to production database' and DB_URI_DEV='path to development database'
+1. create .env file in backend directory
 
-cd backend && npm run dev
+2. add DB_URI='path to production database' and DB_URI_DEV='path to development database'
+
+3. cd backend && npm run dev

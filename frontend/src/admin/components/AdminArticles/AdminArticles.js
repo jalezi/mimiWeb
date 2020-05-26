@@ -9,7 +9,7 @@ import './AdminArticles.css';
 const AdminArticles = () => {
   const [news, setNews] = useState({ articles: [] });
   const [showForm, setShowForm] = useState(false);
-  let htmlElements = null;
+  let allArticles = null;
   const history = useHistory();
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const AdminArticles = () => {
     }
   };
 
-  htmlElements = news.articles.map(item => (
+  allArticles = news.articles.map(item => (
     <AdminArticle
       key={item._id}
       item={item}
@@ -99,7 +99,7 @@ const AdminArticles = () => {
         ) : null}
         {showForm ? <hr /> : null}
       </div>
-      <div id="all-articles">{htmlElements ? htmlElements : null}</div>
+      <div id="all-articles">{allArticles ? allArticles : null}</div>
     </React.Fragment>
   );
 };

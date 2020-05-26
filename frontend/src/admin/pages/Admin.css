@@ -1,9 +1,16 @@
 .Admin {
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 /* no serious - just kidding */
 .Striketrough {
   text-decoration: line-through;
+}
+
+@media (min-width: 768px) {
+  .Admin {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
 }

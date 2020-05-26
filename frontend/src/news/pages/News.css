@@ -1,8 +1,21 @@
 .News {
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 5rem;
+  margin-right: 5rem;
 }
 
 .News article {
   text-align: justify;
+}
+
+.News hr {
+  border: 2px solid #f15c27;
+  border-radius: 5px;
+}
+
+.News h3 {
+  margin-bottom: 0;
+}
+
+.News h6 {
+  margin-top: 0;
 }

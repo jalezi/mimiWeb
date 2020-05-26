@@ -1,21 +1,9 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import './NewArticle.css';
-
-// should use moment package?
-const formatDate = date => {
-  let d = new Date(date),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  return [year, month, day].join('-');
-};
+import { Editor } from '@tinymce/tinymce-react';
+import { formatDate } from './../../../shared/util/utils';
 
 const initialState = {
   date: formatDate(new Date()),
@@ -24,37 +12,53 @@ const initialState = {
 };
 
 const NewArticle = props => {
-  const [formData, newFormData] = useState({ ...initialState });
-  const history = useHistory();
+  const [formData, newFormData] = useState({
+    date: initialState.date,
+    title: initialState.title,
+  });
+  const [body, newBody] = useState('');
 
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 
   const onSubmit = async data => {
-    console.log('[NewArticle] [onSubmit] data: ', data);
+    newFormData({ date: data.date, title: data.title, body });
+
     try {
-      await fetch('/api/news', {
+      const response = await fetch('/api/news', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data }),
+        body: JSON.stringify({ ...data, body }),
       });
+      const json = await response.json();
+      const article = json.article;
+
+      props.updateNewsState(article);
       newFormData({ ...initialState });
-      history.push('/admin');
+      props.close();
     } catch (err) {
       console.log(err);
     }
   };
 
+  const handleChange = content => {
+    newBody(content);
+  };
+
   return (
     <React.Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="date">Date</label>
+        <label className="label" htmlFor="date">
+          Date
+        </label>
         <input
           type="date"
           name="date"
           ref={register}
           defaultValue={formData.date}
         />
-        <label htmlFor="title">Title</label>
+        <label className="label" htmlFor="title">
+          Title
+        </label>
         <input
           type="text"
           id="title"
@@ -64,17 +68,22 @@ const NewArticle = props => {
           defaultValue={formData.title}
         />
         {errors.title && 'Title is required.'}
-        <label htmlFor="body">Text</label>
-        <textarea
+        <label className="label" htmlFor="body">
+          Text
+        </label>
+        <Editor
+          apiKey="drxdklp0uwvgvcxz0amzqgr787zdsz61sprkzl3jx3lz72il"
           id="body"
-          name="body"
-          rows="5"
-          cols="50"
-          placeholder="Your text..."
+          textareaName="body"
+          value={body}
+          init={{
+            height: 500,
+            menubar: false,
+          }}
           ref={register}
-          defaultValue={formData.body}
+          onEditorChange={handleChange}
         />
-        <button type="submit">PUBLISH</button>
+        <input type="submit" value="PUBLISH" />
       </form>
     </React.Fragment>
   );

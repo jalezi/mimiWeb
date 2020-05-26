@@ -65,33 +65,41 @@ const AdminArticles = () => {
     />
   ));
 
-  const showFormHandler = event => {
-    event.preventDefault();
+  const showFormHandler = () => {
     setShowForm(!showForm);
+  };
+
+  const updateArticles = article => {
+    setNews(prevState => {
+      const arr = [...prevState.articles];
+      arr.unshift(article);
+      return { ...news, articles: arr };
+    });
   };
 
   return (
     <React.Fragment>
-      <nav>
-        <ul className="nav-links">
-          <li>
-            {!showForm ? (
-              <button className="button" onClick={showFormHandler}>
-                New Article
-              </button>
-            ) : (
-              <button
-                className="button button--danger"
-                onClick={showFormHandler}>
-                Cancel
-              </button>
-            )}
-          </li>
-        </ul>
-      </nav>
-      {showForm ? <NewArticle /> : null}
-      {showForm ? <hr /> : null}
-      <div>{htmlElements ? htmlElements : null}</div>
+      <div id="show-form-button">
+        {!showForm ? (
+          <button className="button" onClick={showFormHandler}>
+            NEW ARTICLE
+          </button>
+        ) : (
+          <button className="button" onClick={showFormHandler}>
+            CANCEL
+          </button>
+        )}
+      </div>
+      <div id="new-article-form">
+        {showForm ? (
+          <NewArticle
+            close={showFormHandler}
+            updateNewsState={updateArticles}
+          />
+        ) : null}
+        {showForm ? <hr /> : null}
+      </div>
+      <div id="all-articles">{htmlElements ? htmlElements : null}</div>
     </React.Fragment>
   );
 };

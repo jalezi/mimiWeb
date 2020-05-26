@@ -9,13 +9,17 @@ const Admin = () => {
       <h2>Admin</h2>
       <div className="Admin">
         <h3>News</h3>
-        <ul>
-          <li className="Striketrough">Sort Articles</li>
-          <li className="Striketrough">Add Article</li>
-          <li className="Striketrough">Delete Article</li>
-          <li>Edit Article</li>
-        </ul>
-        <AdminArticles />
+        <section id="tasks">
+          <ul>
+            <li className="Striketrough">Sort Articles</li>
+            <li className="Striketrough">Add Article</li>
+            <li className="Striketrough">Delete Article</li>
+            <li>Edit Article</li>
+          </ul>
+        </section>
+        <section id="admin-articles">
+          <AdminArticles />
+        </section>
       </div>
     </div>
   );

@@ -1,3 +1,9 @@
+/* @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  input[type='button'] {
+    color: red
+  }
+} */
+
 * {
   box-sizing: border-box;
 }

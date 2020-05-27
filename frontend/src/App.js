@@ -13,6 +13,7 @@ const App = () => {
       <Route path="/news">
         <News />
       </Route>
+      <Route path="/admin/gallery">Gallery</Route>
       <Route path="/admin">
         <Admin />
       </Route>

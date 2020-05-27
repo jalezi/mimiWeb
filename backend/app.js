@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const multer = require('multer');
+const upload = multer({ dest: 'public/images/' });
+const path = require('path');
+const cors = require('cors');
 
 const config = require('./config');
 const newsRoutes = require('./routes/news');
@@ -22,6 +26,7 @@ const isDev = envNode !== 'production';
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 // not sure if this is necessary
 app.set('host', envHost);
@@ -29,6 +34,14 @@ app.set('port', port);
 
 // API Routes
 app.use('/api/news', newsRoutes);
+app.post('/api/image', upload.array('images', 3), function (req, res, next) {
+  console.log('POST /api/image');
+  // req.files is array of `photos` files
+  console.log(req.files);
+  // req.body will contain the text fields, if there were any
+  console.log(req.body);
+  res.send([req.files[0].filename]);
+});
 app.use((req, res) => {
   const error = new HttpError('Could not find this route.', 404);
   throw error;
@@ -45,6 +58,8 @@ app.use((error, req, res, next) => {
   res.status(error.code || 500);
   res.json({ message: error.message || 'An unknown error occurred!' });
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up Mongoose and App listen
 mongoose

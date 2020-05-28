@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import './NewArticle.css';
 import { Editor } from '@tinymce/tinymce-react';
 import { formatDate } from './../../../shared/util/utils';
-import FileUpload from './FileUpload/FileUpload';
 
 const initialState = {
   date: formatDate(new Date()),
@@ -18,7 +17,6 @@ const NewArticle = props => {
     title: initialState.title,
   });
   const [body, newBody] = useState('');
-  const [files, setFiles] = useState([]);
 
   const { register, handleSubmit, errors } = useForm(); // initialise the hook
 
@@ -45,13 +43,6 @@ const NewArticle = props => {
 
   const handleChange = content => {
     newBody(content);
-  };
-
-  const handleFileUpload = fileItems => {
-    console.log('[handleFileUpload] fileItems: ', fileItems);
-    // Set current file objects to this.state
-    setFiles(fileItems.map(fileItem => fileItem.file));
-    console.log('[handleFileUpload] files: ', files);
   };
 
   return (
@@ -104,10 +95,6 @@ const NewArticle = props => {
           }}
           ref={register}
           onEditorChange={handleChange}
-        />
-        <FileUpload
-          ref={register}
-          handleUpload={fileItems => handleFileUpload(fileItems)}
         />
         <input type="submit" value="PUBLISH" />
       </form>

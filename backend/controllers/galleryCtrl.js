@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
 const gridFsInit = require('../config/gridfs');
 
+const { HttpError } = require('../models');
+
 // Init gfs
 let gfs;
 

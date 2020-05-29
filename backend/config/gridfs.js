@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const multer = require('multer');
-const Grid = require('gridfs-stream');
 const GridFsStorage = require('multer-gridfs-storage');
 const crypto = require('crypto');
 const path = require('path');
@@ -31,10 +30,12 @@ const gridFsSetUp = () => {
           }
           const filename =
             buf.toString('hex') + path.extname(file.originalname);
+          const metadata = { ...file };
           const fileInfo = {
             filename: filename,
             // bucketName should match the gfs collection
             bucketName: 'uploads',
+            metadata,
           };
           resolve(fileInfo);
         });

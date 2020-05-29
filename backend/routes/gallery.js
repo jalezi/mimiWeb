@@ -6,7 +6,7 @@ const GridFsStorage = require('multer-gridfs-storage');
 const crypto = require('crypto');
 const path = require('path');
 
-const { HttpError } = require('../models');
+const { HttpError, GridFs } = require('../models');
 const config = require('../config');
 
 const router = express.Router();

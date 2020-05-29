@@ -19,6 +19,7 @@ const Gallery = () => {
   const [uploadFilename, setUploadFileName] = useState('');
   const [uploadSize, setUploadSize] = useState(0);
   const [imageOutputSrc, setImageOutpupSrc] = useState();
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const [loading, changeLoading] = useState(false);
   const [loaded, changeLoaded] = useState(false);
   const [progress, changeProgress] = useState(0);
@@ -33,6 +34,7 @@ const Gallery = () => {
       </div>
     </div>
   );
+
   let ImagesComponent = <p>No files to show!</p>;
 
   useEffect(() => {
@@ -85,6 +87,9 @@ const Gallery = () => {
               <form method="POST" action={formAction}>
                 <button>DELETE</button>
               </form>
+              <form method="POST" action={() => alert('EDIT')}>
+                <button disabled>EDIT</button>
+              </form>
             </div>
             <div className="polaroid">
               <img src={imgSRC} alt={file.filename} />
@@ -102,23 +107,37 @@ const Gallery = () => {
   }
 
   const chooseFileChangeHandler = event => {
-    setUploadSize(0);
-    console.log(event.target);
-    console.log(event.target.files);
+    const target = event.target || event.srcElement;
+
     changeLoading(true);
-    const file = event.target.files[0];
-    const reader = new FileReader();
+    changeLoaded(false);
+    setImageSize({ width: 0, height: 0 });
+    setImageOutpupSrc('');
+    setUploadFileName('');
+    setUploadSize(0);
+
+    // TODO What should I do with you?
     const status = document.getElementById('status');
-    if (!file) {
+
+    if (target.files.length === 0) {
       status.textContent = 'Select the file';
+      changeLoading(false);
+      changeLoaded(false);
       return;
     }
+
+    const file = target.files[0];
+    const reader = new FileReader();
+
+    // TODO Research if needed while input has attr accept=".jpg, .jpeg, .png"
     if (!file.type) {
+      changeLoading(false);
       status.textContent =
         'Error: The File.type property does not appear to be supported on this browser.';
       return;
     }
-    if (!file.type.match('image.*')) {
+    if (!file.type.match('image.*') && !loaded) {
+      changeLoading(false);
       status.textContent =
         'Error: The selected file does not appear to be an image.';
       return;
@@ -127,12 +146,21 @@ const Gallery = () => {
     reader.addEventListener('load', event => {
       console.log(event.target);
       setUploadFileName(file.name);
-
       setImageOutpupSrc(event.target.result);
       changeLoaded(true);
-      changeLoading(false);
       const output = document.getElementById('output');
       output.src = event.target.result;
+
+      document.getElementById('output').addEventListener('load', function () {
+        const sizes = {
+          height: this.naturalWidth,
+          width: this.naturalHeight,
+        };
+        setImageSize({ ...sizes });
+        console.log(sizes);
+      });
+
+      changeLoading(false);
     });
 
     reader.addEventListener('progress', event => {
@@ -166,6 +194,7 @@ const Gallery = () => {
           <div>
             <h2>Mongo FIle Uploads</h2>
             <form
+              id="fileForm"
               action="/api/gallery/upload"
               method="POST"
               encType="multipart/form-data">
@@ -177,10 +206,22 @@ const Gallery = () => {
                   name="file"
                   id="file"
                   accept=".jpg, .jpeg, .png"></input>
+
+                <input
+                  hidden
+                  type="number"
+                  name="width"
+                  value={imageSize.width}></input>
+                <input
+                  hidden
+                  type="number"
+                  name="height"
+                  value={imageSize.height}></input>
               </div>
 
-              {loading && <p id="status">{progress}</p>}
-              <input type="submit" value="Submit" />
+              {!loading && <p id="status"></p>}
+              {loading && <p id="progres">{progress}</p>}
+              <input type="submit" value="Submit" disabled={!loaded} />
             </form>
             {loaded && imageOutpupComponent}
           </div>

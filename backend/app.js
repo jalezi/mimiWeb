@@ -65,6 +65,7 @@ app.use((error, req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// TODO Investigate poolsize option for both mongo connections
 // Set up Mongoose and App listen
 mongoose
   .connect(mongoURI, {

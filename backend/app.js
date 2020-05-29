@@ -43,7 +43,7 @@ const mongoURI = isDev ? config.db_dev : config.db;
 app.use('/api/news', newsRouter);
 app.use('/api/gallery', galleryRouter);
 
-// TODO Error handling
+// TODO Error handling - check all next(err) or similar
 app.use((req, res) => {
   console.log('Route not exists');
   const error = new HttpError('Could not find this route.', 404);

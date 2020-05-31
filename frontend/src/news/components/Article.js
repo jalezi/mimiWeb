@@ -10,8 +10,8 @@ const Article = props => {
 
   return (
     <article id={props.item._id}>
-      <h3>{props.item.title}</h3>
-      <h6>Date: {date}</h6>
+      <h2>{props.item.title}</h2>
+      <h3>Date: {date}</h3>
       {reactElement}
     </article>
   );

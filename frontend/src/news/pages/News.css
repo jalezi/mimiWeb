@@ -1,6 +1,6 @@
 .News {
-  margin-left: 5rem;
-  margin-right: 5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .News article {
@@ -12,10 +12,17 @@
   border-radius: 5px;
 }
 
-.News h3 {
+.News h2 {
   margin-bottom: 0;
 }
 
-.News h6 {
+.News h3 {
   margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .News {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem;
+  }
 }

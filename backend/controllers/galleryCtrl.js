@@ -1,21 +1,25 @@
 const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
-const gridFsInit = require('../config/gridfs');
+const upload = require('../middleware/fileUpload');
+
+const conn = mongoose.connection;
 
 const { HttpError } = require('../models');
 
 // Init gfs
 let gfs;
 
-gridFsInit.conn.once('open', () => {
+conn.once('open', () => {
   // Init stream
-  gfs = Grid(gridFsInit.conn.db, mongoose.mongo);
+  gfs = Grid(conn.db, mongoose.mongo);
   gfs.collection('uploads');
   console.log('gridFS stream initialized');
 });
 
-const postUpload = (req, res) => {
+const postUpload = async (req, res) => {
   console.log('POST /api/gallery/upload');
+  await upload(req, res);
+  console.log(req.file);
   res.redirect('/admin/gallery');
 };
 

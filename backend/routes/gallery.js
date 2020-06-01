@@ -1,16 +1,13 @@
 const express = require('express');
 
-const gridFsInit = require('../config/gridfs');
 const { galleryCtrl: ctrl } = require('../controllers');
 
 const router = express.Router();
 
-const uploadMulterStorage = gridFsInit.uploadMulterStorage;
-
 // @route POST /api/gallery/upload
 // @desc Uploads file to DB
 // 'file' is the name form input in frontend Gallery
-router.post('/upload', uploadMulterStorage.single('file'), ctrl.postUpload);
+router.post('/upload', ctrl.postUpload);
 
 // @route GET /api/gallery/files
 // @desc Display all files in JSON

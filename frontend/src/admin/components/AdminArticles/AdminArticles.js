@@ -79,6 +79,15 @@ const AdminArticles = () => {
 
   return (
     <React.Fragment>
+      <div id="new-article-form">
+        {showForm ? (
+          <NewArticle
+            close={showFormHandler}
+            updateNewsState={updateArticles}
+          />
+        ) : null}
+        {showForm ? <hr /> : null}
+      </div>
       <div id="show-form-button">
         {!showForm ? (
           <button className="button" onClick={showFormHandler}>
@@ -90,15 +99,7 @@ const AdminArticles = () => {
           </button>
         )}
       </div>
-      <div id="new-article-form">
-        {showForm ? (
-          <NewArticle
-            close={showFormHandler}
-            updateNewsState={updateArticles}
-          />
-        ) : null}
-        {showForm ? <hr /> : null}
-      </div>
+      <hr />
       <div id="all-articles">{allArticles ? allArticles : null}</div>
     </React.Fragment>
   );

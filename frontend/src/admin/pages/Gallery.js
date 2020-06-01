@@ -87,9 +87,6 @@ const Gallery = () => {
               <form method="POST" action={formAction}>
                 <button>DELETE</button>
               </form>
-              <form method="POST" action={() => alert('EDIT')}>
-                <button disabled>EDIT</button>
-              </form>
             </div>
             <div className="polaroid">
               <img src={imgSRC} alt={file.filename} />
@@ -144,7 +141,6 @@ const Gallery = () => {
     }
 
     reader.addEventListener('load', event => {
-      console.log(event.target);
       setUploadFileName(file.name);
       setImageOutpupSrc(event.target.result);
       changeLoaded(true);
@@ -211,12 +207,14 @@ const Gallery = () => {
                   hidden
                   type="number"
                   name="width"
-                  value={imageSize.width}></input>
+                  value={imageSize.width}
+                  readOnly></input>
                 <input
                   hidden
                   type="number"
                   name="height"
-                  value={imageSize.height}></input>
+                  value={imageSize.height}
+                  readOnly></input>
               </div>
 
               {!loading && <p id="status"></p>}

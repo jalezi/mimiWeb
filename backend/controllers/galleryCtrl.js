@@ -19,8 +19,11 @@ conn.once('open', () => {
 const postUpload = async (req, res) => {
   console.log('POST /api/gallery/upload');
   await upload(req, res);
-  console.log(req.file);
-  res.redirect('/admin/gallery');
+  const { width, height } = req.body;
+  console.log('POST /api/gallery/upload', width);
+  console.log('POST /api/gallery/upload', height);
+
+  return res.json({ file: req.file });
 };
 
 const getFiles = (req, res) => {
@@ -47,10 +50,10 @@ const getFile = (req, res) => {
       return res.json({ code: error.code, msg: error.message });
     }
     // Files exists
-    console.log(
-      `[GET /api/gallery/files/:${req.params.filename}] file: `,
-      file
-    );
+    // console.log(
+    //   `[GET /api/gallery/files/:${req.params.filename}] file: `,
+    //   file
+    // );
     return res.json(file);
   });
 };
@@ -58,7 +61,7 @@ const getFile = (req, res) => {
 const getImage = (req, res) => {
   console.log('GET /api/gallery/image/:filename');
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    console.log(file);
+    // console.log(file);
     // Check if files
     if (!file || file.length === 0) {
       const error = new HttpError('No file exist', 404);

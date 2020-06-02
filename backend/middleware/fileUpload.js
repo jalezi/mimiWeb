@@ -24,6 +24,7 @@ const storage = new GridFsStorage({
   url: mongoURI,
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
+    console.log('storage', req.body);
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
         if (err) {
@@ -32,6 +33,7 @@ const storage = new GridFsStorage({
         const filename = buf.toString('hex') + path.extname(file.originalname);
         const metadata = { ...file };
         const fileInfo = {
+          ...file,
           filename: filename,
           // bucketName should match the gfs collection
           bucketName: 'uploads',
@@ -39,7 +41,7 @@ const storage = new GridFsStorage({
         };
 
         resolve(fileInfo);
-        console.log('fileInfo: ', fileInfo);
+        // console.log('[fileUpload] [storage] fileInfo: ', fileInfo);
         return fileInfo;
       });
     });

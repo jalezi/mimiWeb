@@ -10,6 +10,12 @@ const articleSchemaObject = {
     images: [
       {
         type: ObjectId,
+        ref: 'Photo',
+      },
+    ],
+    files: [
+      {
+        type: ObjectId,
         ref: 'File',
       },
     ],

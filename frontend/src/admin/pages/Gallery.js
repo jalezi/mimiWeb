@@ -18,7 +18,7 @@ const Gallery = () => {
   const [images, setImages] = useState([]);
   const [uploadFilename, setUploadFileName] = useState('');
   const [uploadSize, setUploadSize] = useState(0);
-  const [imageOutputSrc, setImageOutpupSrc] = useState();
+  const [imageOutputSrc, setImageOutputSrc] = useState();
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const [loading, changeLoading] = useState(false);
   const [loaded, changeLoaded] = useState(false);
@@ -109,7 +109,7 @@ const Gallery = () => {
     changeLoading(true);
     changeLoaded(false);
     setImageSize({ width: 0, height: 0 });
-    setImageOutpupSrc('');
+    setImageOutputSrc('');
     setUploadFileName('');
     setUploadSize(0);
 
@@ -142,7 +142,7 @@ const Gallery = () => {
 
     reader.addEventListener('load', event => {
       setUploadFileName(file.name);
-      setImageOutpupSrc(event.target.result);
+      setImageOutputSrc(event.target.result);
       changeLoaded(true);
       const output = document.getElementById('output');
       output.src = event.target.result;
@@ -170,6 +170,36 @@ const Gallery = () => {
     reader.readAsDataURL(file);
   };
 
+  const submitHandler = async event => {
+    event.preventDefault();
+    const form = document.getElementById('fileForm');
+
+    const formData = new FormData(form);
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1]);
+    }
+
+    const response = await fetch('/api/gallery/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const json = await response.json();
+
+    const fileDoc = json.file;
+
+    fileDoc.isImage = true;
+    fileDoc._id = fileDoc.id;
+    setImages([fileDoc, ...images]);
+    changeLoading(false);
+    changeLoaded(false);
+    setImageSize({ width: 0, height: 0 });
+    setImageOutputSrc('');
+    setUploadFileName('');
+    setUploadSize(0);
+  };
+
   return (
     <div>
       <h2>Admin</h2>
@@ -189,11 +219,7 @@ const Gallery = () => {
         <section id="admin-gallery-upload">
           <div>
             <h2>Mongo FIle Uploads</h2>
-            <form
-              id="fileForm"
-              action="/api/gallery/upload"
-              method="POST"
-              encType="multipart/form-data">
+            <form id="fileForm" name="fileForm" method="POST">
               <div>
                 <label htmlFor="file">Choose File</label>
                 <input
@@ -202,24 +228,30 @@ const Gallery = () => {
                   name="file"
                   id="file"
                   accept=".jpg, .jpeg, .png"></input>
-
                 <input
                   hidden
                   type="number"
                   name="width"
                   value={imageSize.width}
-                  readOnly></input>
+                  readOnly
+                />
                 <input
                   hidden
                   type="number"
                   name="height"
                   value={imageSize.height}
-                  readOnly></input>
+                  readOnly
+                />
               </div>
 
               {!loading && <p id="status"></p>}
               {loading && <p id="progres">{progress}</p>}
-              <input type="submit" value="Submit" disabled={!loaded} />
+              <input
+                onClick={submitHandler}
+                type="button"
+                value="Submit"
+                disabled={!loaded}
+              />
             </form>
             {loaded && imageOutpupComponent}
           </div>

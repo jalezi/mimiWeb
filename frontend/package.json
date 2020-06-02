@@ -7,7 +7,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@tinymce/tinymce-react": "^3.6.0",
-    "filepond": "^4.13.7",
+    "filepond": "^4.14.0",
     "filepond-plugin-image-exif-orientation": "^1.0.9",
     "filepond-plugin-image-preview": "^4.6.4",
     "html-to-react": "^1.4.3",

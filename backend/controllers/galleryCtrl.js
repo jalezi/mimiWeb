@@ -4,7 +4,7 @@ const upload = require('../middleware/fileUpload');
 
 const conn = mongoose.connection;
 
-const { HttpError } = require('../models');
+const { HttpError, Photo } = require('../models');
 
 // Init gfs
 let gfs;
@@ -18,12 +18,29 @@ conn.once('open', () => {
 
 const postUpload = async (req, res) => {
   console.log('POST /api/gallery/upload');
-  await upload(req, res);
-  const { width, height } = req.body;
-  console.log('POST /api/gallery/upload', width);
-  console.log('POST /api/gallery/upload', height);
+  try {
+    // Upload file/photo
+    await upload(req, res);
+    const { width, height } = req.body;
+    const { id, metadata, bucketName, size } = req.file;
+    const { encoding, originalname, mimetype } = metadata;
 
-  return res.json({ file: req.file });
+    // Create photo document
+    const photoObject = {
+      fileId: id,
+      originalSize: { height, width },
+      mimetype: mimetype,
+      encoding,
+      name: originalname,
+      size,
+      bucketName,
+    };
+    const photo = new Photo(photoObject);
+    await photo.save();
+    return res.json({ file: req.file });
+  } catch (error) {
+    return res.json({ code: error.code, msg: error.message });
+  }
 };
 
 const getFiles = (req, res) => {
@@ -35,7 +52,6 @@ const getFiles = (req, res) => {
       return res.json({ code: error.code, msg: error.message });
     }
     // Files exists
-    console.log(`[GET /api/gallery/files] files length: `, files.length);
     return res.json(files);
   });
 };
@@ -50,10 +66,6 @@ const getFile = (req, res) => {
       return res.json({ code: error.code, msg: error.message });
     }
     // Files exists
-    // console.log(
-    //   `[GET /api/gallery/files/:${req.params.filename}] file: `,
-    //   file
-    // );
     return res.json(file);
   });
 };
@@ -61,7 +73,6 @@ const getFile = (req, res) => {
 const getImage = (req, res) => {
   console.log('GET /api/gallery/image/:filename');
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    // console.log(file);
     // Check if files
     if (!file || file.length === 0) {
       const error = new HttpError('No file exist', 404);
@@ -89,9 +100,14 @@ const deleteFile = (req, res) => {
   gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
     if (err) {
       console.log(err);
-      const error = new HttpError('File was not deleted', 404);
-      return res.json({ code: error.code, msg: error.message });
+      return res.json({ code: err.code, msg: err.message });
     }
+    Photo.findOneAndDelete({ fileId: req.params.id }, err => {
+      console.log('DELETE /api/admin/gallery/files/:filename Photo.deleteOne');
+      if (err) {
+        return res.json({ code: err.code, msg: err.message });
+      }
+    });
     res.redirect('/admin/gallery');
   });
 };

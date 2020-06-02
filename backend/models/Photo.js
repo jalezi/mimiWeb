@@ -1,49 +1,85 @@
 const mongoose = require('mongoose');
 
+const { ObjectId } = mongoose.Schema;
+
 const Counter = require('./Counter');
+const { counterInit } = require('../utils');
+const { findCounterForModel } = counterInit;
 
 const photoSchemaObject = {
+  fileId: { type: ObjectId, ref: 'uploads', unique: true, required: true },
   name: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
   },
   desc: {
     type: String,
     alias: 'description',
   },
-  fp: {
+  mt: {
     type: String,
-    alias: 'filepath',
-    required: true,
-  },
-  ft: {
-    type: String,
-    alias: 'fileType',
+    alias: 'mimetype',
     required: true,
   },
   tags: [String],
-  default: Boolean,
+  default: { type: Boolean, default: false },
+  originalSize: {
+    width: Number,
+    height: Number,
+  },
   cnt: {
     type: Number,
     alias: 'counter',
   },
+  bucketName: String,
+  encoding: String,
+  size: Number,
 };
 
 const photoSchema = new mongoose.Schema(photoSchemaObject, {
   timestamps: true,
 });
 
-photoSchema.pre('save', function save(next) {
+// before saving photo doc, increment photo counter
+photoSchema.pre('save', async function save(next) {
+  console.log('pre save photo START');
   const doc = this;
-  Counter.findById('photoId', { $inc: { seq: 1 } }, (err, counter) => {
-    if (err) {
-      return next(err);
+
+  try {
+    let counter = await findCounterForModel('photos');
+    console.log('pre save photo', counter);
+    if (counter.seq === 0) {
+      doc.default = true;
     }
-    doc.cnt = counter.seq;
+    doc.cnt = counter.seq + 1;
+    counter = await Counter.updateOne({ _id: 'photos' }, { $inc: { seq: 1 } });
     next();
-  });
+  } catch (error) {
+    next(error);
+  }
 });
+
+// after saving photo doc, decrement photo counter
+photoSchema.post(
+  'findOneAndDelete',
+  { document: true, query: false },
+  async function deleteOne() {
+    console.log('post deleteOne photo');
+    console.log('removing example...');
+    try {
+      let counter = await findCounterForModel('photos');
+      console.log('post deleteOne photo', counter);
+      counter = await Counter.updateOne(
+        { _id: 'photos' },
+        { $inc: { seq: -1 } }
+      );
+      console.log('post deleteOne photo Counter.updateOne ', counter);
+    } catch (error) {
+      return error;
+    }
+  }
+);
 
 const Photo = mongoose.model('Photo', photoSchema);
 

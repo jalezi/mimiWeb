@@ -43,7 +43,7 @@ const photoSchema = new mongoose.Schema(photoSchemaObject, {
 
 // before saving photo doc, increment photo counter
 photoSchema.pre('save', async function save(next) {
-  console.log('pre save photo START');
+  console.log('Photo.save pre middleware');
   const doc = this;
 
   try {
@@ -60,21 +60,18 @@ photoSchema.pre('save', async function save(next) {
   }
 });
 
-// after saving photo doc, decrement photo counter
+// after deleting photo doc, decrement photo counter
 photoSchema.post(
   'findOneAndDelete',
   { document: true, query: false },
   async function deleteOne() {
-    console.log('post deleteOne photo');
-    console.log('removing example...');
+    console.log('Photo.findOneAndDelete post middleware');
     try {
       let counter = await findCounterForModel('photos');
-      console.log('post deleteOne photo', counter);
       counter = await Counter.updateOne(
         { _id: 'photos' },
         { $inc: { seq: -1 } }
       );
-      console.log('post deleteOne photo Counter.updateOne ', counter);
     } catch (error) {
       return error;
     }

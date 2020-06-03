@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Gallery.css';
+import Images from './../components/Images/Images';
+import UploadImage from '../components/Images/UploadImage';
 
 const formatBytes = (bytes, decimals = 2) => {
   if (bytes === 0) return '0 Bytes';
@@ -23,20 +25,17 @@ const Gallery = () => {
   const [loading, changeLoading] = useState(false);
   const [loaded, changeLoaded] = useState(false);
   const [progress, changeProgress] = useState(0);
-  let imageOutpupComponent = (
-    <div>
-      <div className="polaroid">
-        <img src={imageOutputSrc} alt="upload" id="output" />
-        <div className="container">
-          <p>{uploadFilename}</p>
-          <p>{uploadSize}</p>
-        </div>
-      </div>
-    </div>
+
+  // Upload image component
+  let imageOutputComponent = (
+    <UploadImage
+      src={imageOutputSrc}
+      filename={uploadFilename}
+      size={uploadSize}
+    />
   );
 
-  let ImagesComponent = <p>No files to show!</p>;
-
+  // fetch all photos from db
   useEffect(() => {
     fetch('/api/gallery/files')
       .then(res => {
@@ -71,37 +70,6 @@ const Gallery = () => {
         return err;
       });
   }, []);
-
-  if (images) {
-    ImagesComponent = images.map(file => {
-      let jsxElement = null;
-      let imgSRC = '/api/gallery/image/';
-      let formAction = '/api/gallery/files/';
-      if (file.isImage) {
-        imgSRC += file.filename;
-        formAction += file._id + '?_method=DELETE';
-        jsxElement = (
-          <div key={file._id}>
-            <div className="image-div">
-              <img src={imgSRC} alt={file.filename} />
-              <form method="POST" action={formAction}>
-                <button>DELETE</button>
-              </form>
-            </div>
-            <div className="polaroid">
-              <img src={imgSRC} alt={file.filename} />
-              <div className="container">
-                <p>{file.filename}</p>
-              </div>
-            </div>
-          </div>
-        );
-        return jsxElement;
-      } else {
-        return false;
-      }
-    });
-  }
 
   const chooseFileChangeHandler = event => {
     const target = event.target || event.srcElement;
@@ -253,12 +221,12 @@ const Gallery = () => {
                 disabled={!loaded}
               />
             </form>
-            {loaded && imageOutpupComponent}
+            {loaded && imageOutputComponent}
           </div>
         </section>
         <section id="admin-gallery">
           <h2>Gallery</h2>
-          {ImagesComponent}
+          <Images images={images} />
         </section>
       </div>
     </div>

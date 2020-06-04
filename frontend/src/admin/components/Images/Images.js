@@ -6,7 +6,7 @@ const Images = props => {
   if (images) {
     ImagesComponent = images.map(file => {
       let jsxElement = null;
-      let imgSRC = '/api/gallery/image/';
+      let imgSRC = '/api/gallery/images/';
       let formAction = '/api/gallery/files/';
       if (file.isImage) {
         imgSRC += file.filename;

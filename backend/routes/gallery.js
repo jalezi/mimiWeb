@@ -17,9 +17,13 @@ router.get('/files', ctrl.getFiles);
 // @desc Display single file in JSON
 router.get('/files/:filename', ctrl.getFile);
 
-// @route GET /api/gallery/image/:filename
+// @route GET /api/gallery/files
+// @desc Display all files in JSON
+router.get('/images', ctrl.getImages);
+
+// @route GET /api/gallery/images/:filename
 // @desc Display single file in JSON
-router.get('/image/:filename', ctrl.getImage);
+router.get('/images/:filename', ctrl.getImage);
 
 // @route DELETE /api/admin/gallery/files/:id
 // @desc Delete file

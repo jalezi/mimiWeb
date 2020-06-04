@@ -3,21 +3,11 @@ import { NavLink } from 'react-router-dom';
 import './Gallery.css';
 import Images from './../components/Images/Images';
 import UploadImage from '../components/Images/UploadImage';
-
-const formatBytes = (bytes, decimals = 2) => {
-  if (bytes === 0) return '0 Bytes';
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-};
+import { formatBytes } from '../../shared/util/utils';
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
+  const [imagesData, setImagesData] = useState();
   const [uploadFilename, setUploadFileName] = useState('');
   const [uploadSize, setUploadSize] = useState(0);
   const [imageOutputSrc, setImageOutputSrc] = useState();
@@ -26,7 +16,7 @@ const Gallery = () => {
   const [loaded, changeLoaded] = useState(false);
   const [progress, changeProgress] = useState(0);
 
-  // Upload image component
+  // image to be uploaded component
   let imageOutputComponent = (
     <UploadImage
       src={imageOutputSrc}
@@ -37,7 +27,7 @@ const Gallery = () => {
 
   // fetch all photos from db
   useEffect(() => {
-    fetch('/api/gallery/files')
+    fetch('/api/gallery/images')
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -48,21 +38,15 @@ const Gallery = () => {
           });
         }
       })
-      .then(files => {
+      .then(result => {
+        const { files, photos } = result;
         console.log('[Gallery] files:', files);
+        console.log('[Gallery] photos:', photos);
         // If error from backend
         if (files.code) {
           return;
         }
-
-        files.map(file => {
-          const isImage =
-            file.contentType === 'image/jpeg' ||
-            file.contentType === 'image/png';
-          file.isImage = isImage;
-          return isImage;
-        });
-
+        setImagesData([photos]);
         return setImages([...files]);
       })
       .catch(err => {
@@ -84,6 +68,7 @@ const Gallery = () => {
     // TODO What should I do with you?
     const status = document.getElementById('status');
 
+    // Check if no file selected
     if (target.files.length === 0) {
       status.textContent = 'Select the file';
       changeLoading(false);
@@ -226,7 +211,7 @@ const Gallery = () => {
         </section>
         <section id="admin-gallery">
           <h2>Gallery</h2>
-          <Images images={images} />
+          <Images images={images} data={imagesData} />
         </section>
       </div>
     </div>

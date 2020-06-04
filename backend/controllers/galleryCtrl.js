@@ -16,6 +16,9 @@ conn.once('open', () => {
   console.log('gridFS stream initialized');
 });
 
+// @route POST /api/gallery/upload
+// @desc upload file/photo to db
+// TODO if not image different parameters
 const postUpload = async (req, res) => {
   console.log('POST /api/gallery/upload');
   try {
@@ -70,8 +73,34 @@ const getFile = (req, res) => {
   });
 };
 
+const getImages = async (req, res) => {
+  console.log('GET /api/gallery/images');
+  let photos;
+  try {
+    photos = await Photo.find();
+  } catch (error) {
+    res.json({ code: error.code, msg: error.message });
+  }
+
+  gfs.files.find().toArray((err, files) => {
+    // Check if files
+    if (!files || files.length === 0) {
+      const error = new HttpError('No files exist', 404);
+      return res.json({ code: error.code, msg: error.message });
+    }
+    // Files exists
+    files.map(file => {
+      const isImage =
+        file.contentType === 'image/jpeg' || file.contentType === 'image/png';
+      file.isImage = isImage;
+      return isImage;
+    });
+    return res.json({ files, photos });
+  });
+};
+
 const getImage = (req, res) => {
-  console.log('GET /api/gallery/image/:filename');
+  console.log('GET /api/gallery/images/:filename');
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     // Check if files
     if (!file || file.length === 0) {
@@ -116,6 +145,7 @@ module.exports = {
   postUpload,
   getFiles,
   getFile,
+  getImages,
   getImage,
   deleteFile,
 };

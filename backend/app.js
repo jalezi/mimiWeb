@@ -2,9 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const path = require('path');
+const cors = require('cors');
+const methodOveride = require('method-override');
 
 const config = require('./config');
-const newsRoutes = require('./routes/news');
+const { newsRouter, galleryRouter } = require('./routes');
+const { HttpError } = require('./models');
 
 // running platform
 const platform = process.platform;
@@ -21,18 +25,31 @@ const isDev = envNode !== 'production';
 
 const app = express();
 
-app.use(bodyParser.json());
-
 // not sure if this is necessary
 app.set('host', envHost);
 app.set('port', port);
 
+// Middleware
+app.use(bodyParser.json());
+app.use(methodOveride('_method'));
+app.use(cors());
+
+// Mongo URI
+const mongoURI = isDev ? config.db_dev : config.db;
+
 // API Routes
-app.use('/api/news', newsRoutes);
+
+// @desc /api/news ROUTES
+app.use('/api/news', newsRouter);
+app.use('/api/gallery', galleryRouter);
+
+// TODO Error handling - check all next(err) or similar
 app.use((req, res) => {
+  console.log('Route not exists');
   const error = new HttpError('Could not find this route.', 404);
-  throw error;
+  return res.json(error);
 });
+
 app.use((error, req, res, next) => {
   if (req.file) {
     fs.unlink(req.file.path, err => {
@@ -46,9 +63,12 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message || 'An unknown error occurred!' });
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+// TODO Investigate poolsize option for both mongo connections
 // Set up Mongoose and App listen
 mongoose
-  .connect(isDev ? config.db_dev : config.db, {
+  .connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

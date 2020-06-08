@@ -1,0 +1,48 @@
+.image-div {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 100%;
+  margin-bottom: 5px;
+  display: flex;
+
+  align-items: center;
+}
+
+.image-div div {
+  display: inline-block;
+}
+
+.image-div p {
+  font-size: small;
+  padding: 0.2rem;
+  margin: 0;
+}
+
+.image-div img {
+  border: 1px solid #231f20;
+  margin: 5px;
+  width: 15%;
+}
+
+div.polaroid {
+  width: 30%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
+div.container {
+  text-align: center;
+  padding: 10px 5px;
+}
+
+div.container p {
+  font-size: x-small;
+}
+
+div.polaroid img {
+  border: 1px solid #231f20;
+  max-width: 100%;
+  height: auto;
+}

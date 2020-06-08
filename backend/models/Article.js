@@ -1,11 +1,24 @@
 const mongoose = require('mongoose');
 
+const { ObjectId } = mongoose.Types;
+
 const articleSchemaObject = {
-  title: String,
+  title: { type: String, required: true },
   body: String,
   date: Date,
   attachments: {
-    images: [{ path: String }],
+    images: [
+      {
+        type: ObjectId,
+        ref: 'Photo',
+      },
+    ],
+    files: [
+      {
+        type: ObjectId,
+        ref: 'File',
+      },
+    ],
   },
 };
 

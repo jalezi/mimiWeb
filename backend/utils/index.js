@@ -1,0 +1,1 @@
+exports.counterInit = require('./counterInit');

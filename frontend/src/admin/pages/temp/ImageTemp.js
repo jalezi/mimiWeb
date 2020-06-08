@@ -11,19 +11,19 @@ const ImageTemp = props => {
   const photoSize = { ...originalSize };
 
   return (
-    <div id={fileId}>
-      <div className="image-div">
+    <div id={fileId} className="parent">
+      <div className="div1">
         <img src={url} alt={name} />
-        <div className="image-data-div">
-          <p>name: {name}</p>
-          <p>filename: {fn}</p>
-          <p>file size: {fileSize}</p>
-          <p>photo width: {photoSize.width}</p>
-          <p>photo height: {photoSize.width}</p>
-          <p>default: {def.toString()}</p>
-        </div>
       </div>
-      <div>
+      <div className="div2">
+        <p>name: {name}</p>
+        <p>filename: {fn}</p>
+        <p>file size: {fileSize}</p>
+        <p>photo width: {photoSize.width}</p>
+        <p>photo height: {photoSize.width}</p>
+        <p>default: {def.toString()}</p>
+      </div>
+      <div className="div3">
         <button onClick={props.delete}>DELETE</button>
         <button onClick={event => event.preventDefault()} disabled>
           EDIT

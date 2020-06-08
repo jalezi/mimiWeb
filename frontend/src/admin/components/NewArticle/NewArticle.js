@@ -104,7 +104,7 @@ const NewArticle = props => {
             onEditorChange={handleEditorChange}
           />
         </div>
-        <div id="photos">
+        {/* <div id="photos">
           <div>
             <button>+</button>
             <button>-</button>
@@ -121,7 +121,7 @@ const NewArticle = props => {
                 console.log();
               }}></input>
           </div>
-        </div>
+        </div> */}
         <input type="submit" value="PUBLISH" />
         <input type="reset" value="RESET" />
       </form>

@@ -66,6 +66,7 @@ const getFile = (req, res) => {
     // Check if files
     if (!file || file.length === 0) {
       const error = new HttpError('No file exist', 404);
+      console.log(error);
       return res.json({ code: error.code, msg: error.message });
     }
     // Files exists

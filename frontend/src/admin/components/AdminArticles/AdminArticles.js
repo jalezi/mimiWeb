@@ -55,15 +55,17 @@ const AdminArticles = () => {
     }
   };
 
-  allArticles = news.articles.map(item => (
-    <AdminArticle
-      key={item._id}
-      item={item}
-      clicked={event => {
-        onDeleteHandler(event, item._id);
-      }}
-    />
-  ));
+  allArticles = news.articles.map(item => {
+    return (
+      <AdminArticle
+        key={item._id}
+        item={item}
+        clicked={event => {
+          onDeleteHandler(event, item._id);
+        }}
+      />
+    );
+  });
 
   const showFormHandler = () => {
     setShowForm(!showForm);

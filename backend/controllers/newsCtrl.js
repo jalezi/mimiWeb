@@ -1,11 +1,15 @@
 const { Article, HttpError } = require('../models');
 
-const getNewsCtrl = (req, res, next) => {
+const getNewsCtrl = async (req, res, next) => {
   console.log('GET request in News');
-  Article.find()
-    .sort({ date: -1, createdAt: -1 })
-    .then(docs => res.json(docs))
-    .catch(err => next(err));
+  try {
+    const articles = await Article.find()
+      .populate(['attachments.images', 'attachments.files'])
+      .sort({ date: -1, createdAt: -1 });
+    return res.json(articles);
+  } catch (error) {
+    return res.json({ code: error.code, msg: error.message });
+  }
 };
 
 const postNewsCtrl = async (req, res, next) => {
@@ -30,6 +34,7 @@ const postNewsCtrl = async (req, res, next) => {
     await article.save();
     res.status(200).json({ article });
   } catch (err) {
+    console.log(err);
     const error = new HttpError(
       'Creating article failed, please try again',
       500

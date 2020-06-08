@@ -3,7 +3,8 @@ import React from 'react';
 const Images = props => {
   let ImagesComponent = <p>No files to show!</p>;
   const images = props.images;
-  if (images) {
+  console.log('Images', images);
+  if (images.length > 0) {
     ImagesComponent = images.map(file => {
       let jsxElement = null;
       let imgSRC = '/api/gallery/images/';
@@ -17,6 +18,9 @@ const Images = props => {
               <img src={imgSRC} alt={file.filename} />
               <form method="POST" action={formAction}>
                 <button>DELETE</button>
+                <button onClick={event => event.preventDefault()} disabled>
+                  EDIT
+                </button>
               </form>
             </div>
             <div className="polaroid">
@@ -32,8 +36,8 @@ const Images = props => {
         return false;
       }
     });
-    return ImagesComponent;
   }
+  return ImagesComponent;
 };
 
 Images.propTypes = {};

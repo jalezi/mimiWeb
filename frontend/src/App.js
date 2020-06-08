@@ -5,6 +5,7 @@ import News from './news/pages/News';
 import Admin from './admin/pages/Admin';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import Gallery from './admin/pages/Gallery';
+import GalleryTemp from './admin/pages/temp/GalleryTemp';
 
 const App = () => {
   /* A <Switch> looks through its children <Route>s and
@@ -13,6 +14,9 @@ const App = () => {
     <Switch>
       <Route path="/news">
         <News />
+      </Route>
+      <Route path="/admin/galleryTemp">
+        <GalleryTemp />
       </Route>
       <Route path="/admin/gallery">
         <Gallery />

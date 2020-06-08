@@ -13,6 +13,12 @@ const photoSchemaObject = {
     required: true,
     unique: false,
   },
+  fn: {
+    type: String,
+    required: true,
+    unique: true,
+    alias: 'filename',
+  },
   desc: {
     type: String,
     alias: 'description',

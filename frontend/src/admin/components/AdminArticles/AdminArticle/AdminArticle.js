@@ -9,6 +9,7 @@ const AdminArticle = props => {
       <p>Date: {props.item.date}</p>
       <p>Created at: {props.item.createdAt}</p>
       <p>Updated at: {props.item.updatedAt}</p>
+      <p>Tags: {props.item.tags}</p>
       <div>
         <button>EDIT</button>
         <button onClick={props.clicked}>DELETE</button>

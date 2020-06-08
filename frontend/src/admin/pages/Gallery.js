@@ -39,18 +39,20 @@ const Gallery = () => {
         }
       })
       .then(result => {
-        const { files, photos } = result;
+        const { files, photoDocs, code, msg } = result;
         console.log('[Gallery] files:', files);
-        console.log('[Gallery] photos:', photos);
+        console.log('[Gallery] photos:', photoDocs);
         // If error from backend
-        if (files.code) {
+        console.log(code, msg);
+        if (code) {
           return;
         }
-        setImagesData([photos]);
-        return setImages([...files]);
+        setImages([...files]);
+        setImagesData([...photoDocs]);
+        return;
       })
       .catch(err => {
-        console.log(`Error, with message: ${err.statusText}`);
+        console.log(`Error, with message: ${err.message}`);
         return err;
       });
   }, []);
@@ -167,11 +169,14 @@ const Gallery = () => {
             <li>
               <NavLink to="/admin/gallery">Gallery</NavLink>
             </li>
+            <li>
+              <NavLink to="/admin/galleryTemp">Temp Gallery</NavLink>
+            </li>
           </ul>
         </nav>
         <section id="admin-gallery-upload">
           <div>
-            <h2>Mongo FIle Uploads</h2>
+            <h2>Mongo File Uploads</h2>
             <form id="fileForm" name="fileForm" method="POST">
               <div>
                 <label htmlFor="file">Choose File</label>
@@ -209,6 +214,7 @@ const Gallery = () => {
             {loaded && imageOutputComponent}
           </div>
         </section>
+
         <section id="admin-gallery">
           <h2>Gallery</h2>
           <Images images={images} data={imagesData} />

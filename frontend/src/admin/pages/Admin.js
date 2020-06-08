@@ -19,6 +19,9 @@ const Admin = () => {
             <li>
               <NavLink to="/admin/gallery">Gallery</NavLink>
             </li>
+            <li>
+              <NavLink to="/admin/galleryTemp">Temp Gallery</NavLink>
+            </li>
           </ul>
         </nav>
         <section id="admin-articles">

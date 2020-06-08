@@ -25,12 +25,13 @@ const postUpload = async (req, res) => {
     // Upload file/photo
     await upload(req, res);
     const { width, height } = req.body;
-    const { id, metadata, bucketName, size } = req.file;
+    const { id, metadata, bucketName, size, filename } = req.file;
     const { encoding, originalname, mimetype } = metadata;
 
     // Create photo document
     const photoObject = {
       fileId: id,
+      filename,
       originalSize: { height, width },
       mimetype: mimetype,
       encoding,
@@ -62,7 +63,6 @@ const getFiles = (req, res) => {
 const getFile = (req, res) => {
   console.log('GET /api/gallery/files/:filename');
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    console.log(file);
     // Check if files
     if (!file || file.length === 0) {
       const error = new HttpError('No file exist', 404);
@@ -75,11 +75,11 @@ const getFile = (req, res) => {
 
 const getImages = async (req, res) => {
   console.log('GET /api/gallery/images');
-  let photos;
+  let photoDocs;
   try {
-    photos = await Photo.find();
+    photoDocs = await Photo.find();
   } catch (error) {
-    res.json({ code: error.code, msg: error.message });
+    return res.json({ code: error.code, msg: error.message });
   }
 
   gfs.files.find().toArray((err, files) => {
@@ -95,7 +95,7 @@ const getImages = async (req, res) => {
       file.isImage = isImage;
       return isImage;
     });
-    return res.json({ files, photos });
+    return res.json({ files, photoDocs });
   });
 };
 
@@ -110,10 +110,6 @@ const getImage = (req, res) => {
 
     // Check if image
     if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
-      console.log(
-        `[GET /api/gallery/files/:${req.params.filename}] file type: `,
-        file.contentType
-      );
       // Read output to browser
       const readstream = gfs.createReadStream(file.filename);
       return readstream.pipe(res);
@@ -125,7 +121,7 @@ const getImage = (req, res) => {
 };
 
 const deleteFile = (req, res) => {
-  console.log('DELETE /api/admin/gallery/files/:filename');
+  console.log('DELETE /api/admin/gallery/files/:id');
   gfs.remove({ _id: req.params.id, root: 'uploads' }, (err, gridStore) => {
     if (err) {
       console.log(err);
@@ -137,7 +133,7 @@ const deleteFile = (req, res) => {
         return res.json({ code: err.code, msg: err.message });
       }
     });
-    res.redirect('/admin/gallery');
+    return res.redirect('/admin/gallery');
   });
 };
 

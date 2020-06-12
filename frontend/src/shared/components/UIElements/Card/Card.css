@@ -1,0 +1,64 @@
+.card {
+  width: 100%;
+  display: block;
+  margin: 5px auto;
+  border: solid #231f20;
+  border-radius: 4px;
+  transition: 0.25s;
+}
+
+.card:hoover,
+.card:hoover .button-primary {
+  cursor: pointer;
+}
+
+.card-header {
+  height: 150px;
+  width: 100%;
+  padding: 15px;
+  width: 100%;
+  background-color: #231f20;
+  background-size: cover;
+  color: #fff;
+}
+
+.card-header--title {
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.card-body {
+  padding: 15px;
+  background-color: #f9ac54;
+  width: 100%;
+}
+
+.card-body h2 {
+  color: #f15c27;
+}
+
+.card-body--date {
+  font-size: 11px;
+  font-weight: 600;
+  color: #231f20;
+}
+
+.card-body-content {
+  padding-bottom: 40px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.button-primary {
+  border: none;
+  box-shadow: none;
+  font-family: inherit;
+  background-color: transparent;
+  color: #f15c27;
+  font-size: 15px;
+  transition: 0.25s;
+}
+
+.button-primary i {
+  padding-right: 4px;
+}

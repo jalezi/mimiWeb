@@ -1,0 +1,58 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 0;
+}
+
+.home section {
+  margin: 5px 10px;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.home section:nth-child(even) {
+  background-color: #231f20;
+  color: #fff;
+}
+.home section:nth-child(odd) {
+  background-color: #f15c27;
+}
+
+.home-contact {
+  font-size: small;
+}
+
+.home-contact > h2 {
+  margin: 0;
+}
+
+.home-contact-flex {
+  display: flex;
+  justify-content: space-around;
+}
+
+.contact-data {
+  /* color: white; */
+}
+
+.social-media-links {
+  font-size: 2rem;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+}
+.home-contact-flex a {
+  color: inherit;
+}
+
+.home-contact-flex a:hover {
+  color: #f89421;
+}
+
+.innerbox {
+  padding: 10px 0 10px;
+}
+
+.innerbox > p {
+  margin: 0;
+}

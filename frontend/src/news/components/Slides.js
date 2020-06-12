@@ -72,7 +72,7 @@ const Slides = props => {
 
   return (
     <div className="slideshow-container">
-      {slides}
+      <div className="slides">{slides}</div>
       <button
         className="prev"
         onClick={event => {
